@@ -1,29 +1,54 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 int main() {
-    int n;
-    int suma = 0;
-    int impar;
 
-    printf("Ingrese un numero: ");
-    scanf("%d", &n);
+    char buffer[100];
+    long NUMERO;
+    char *endptr;
 
-    printf("Los primeros %d numeros impares son:\n", n);
+    printf("Ingrese un numero entero positivo: ");
 
-    for(int i = 1; i <= n; i++) {
-        impar = 2 * i - 1;   // genera el numero impar
-        suma += impar;       // lo suma
-        printf("%d ", impar);
+    
+    if (fgets(buffer, sizeof(buffer), stdin) == NULL) {
+        return 1; 
     }
 
-    printf("\n\nLa suma de los impares es: %d\n", suma);
-    printf("El cuadrado de %d es: %d\n", n, n * n);
+   
+    NUMERO = strtol(buffer, &endptr, 10);
 
-    if(suma == n * n) {
-        printf("El numero que ha ingresado se puede obtener mediante la suma de sus numeros impares.\n");
-    } else {
-        printf("No se cumple.\n");
+    
+    if (*endptr != '\n' && *endptr != '\0') {
+        printf("Error: El tipo de dato no es correcto y el programa no se puede ejecutar.\n");
+        return 1;
     }
+
+    if (NUMERO <= 0) {
+        printf("Error: El numero debe ser entero positivo y el programa no se puede ejecutar.\n");
+        return 1;
+    }
+
+    long suma = 0;
+    long impar = 1;
+
+    printf("{\n");
+    printf("  \"NUMERO\": %ld,\n", NUMERO);
+    printf("  \"operacion\": \"");
+
+    for (long i = 0; i < NUMERO; i++) {
+        suma += impar;
+        printf("%ld", impar);
+
+        if (i < NUMERO - 1) {
+            printf(" + ");
+        }
+
+        impar += 2;
+    }
+
+    printf("\",\n");
+    printf("  \"resultado\": %ld\n", suma);
+    printf("}\n");
 
     return 0;
 }
